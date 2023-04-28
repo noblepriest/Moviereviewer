@@ -4,12 +4,27 @@ import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from PIL import Image
+import gdown
+import zipfile
+import os
+
+# Download the model from Google Drive
+# Download the model from Google Drive
+model_url = "https://drive.google.com/uc?id=1TxaMckkdOZ64XWs6RUBsDi5NSuZhBN1L"
+model_zip_path = "balaji.zip"
+gdown.download(model_url, model_zip_path, quiet=False)
+
+model_folder = "fine_tuned_model"
+with zipfile.ZipFile(model_zip_path, 'r') as zip_ref:
+    zip_ref.extractall(model_folder)
+
 
 nltk.download('stopwords')
 
+
 # Load your fine-tuned model for sentiment analysis
-fine_tuned_model = AutoModelForSequenceClassification.from_pretrained('IMDB_model_bert')
-tokenizer_fine_tuned = AutoTokenizer.from_pretrained('IMDB_model_bert')
+fine_tuned_model = AutoModelForSequenceClassification.from_pretrained('fine_tuned_model/IMDB_model_bert')
+tokenizer_fine_tuned = AutoTokenizer.from_pretrained('fine_tuned_model/IMDB_model_bert')
 sentiment_model_fine_tuned = pipeline('sentiment-analysis', model=fine_tuned_model, tokenizer=tokenizer_fine_tuned)
 
 # Load pre-trained model for emotional word highlighting
