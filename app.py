@@ -8,16 +8,18 @@ import gdown
 import zipfile
 import os
 
-# Download the model from Google Drive
-# Download the model from Google Drive
-model_url = "https://drive.google.com/uc?id=1TxaMckkdOZ64XWs6RUBsDi5NSuZhBN1L"
 model_zip_path = "balaji.zip"
-gdown.download(model_url, model_zip_path, quiet=False)
-
 model_folder = "fine_tuned_model"
-with zipfile.ZipFile(model_zip_path, 'r') as zip_ref:
-    zip_ref.extractall(model_folder)
 
+# Download the model from Google Drive if it doesn't exist
+if not os.path.exists(model_zip_path):
+    model_url = "https://drive.google.com/uc?id=1TxaMckkdOZ64XWs6RUBsDi5NSuZhBN1L"
+    gdown.download(model_url, model_zip_path, quiet=False)
+
+# Unzip the model if the folder doesn't exist
+if not os.path.exists(model_folder):
+    with zipfile.ZipFile(model_zip_path, 'r') as zip_ref:
+        zip_ref.extractall(model_folder)
 
 nltk.download('stopwords')
 
